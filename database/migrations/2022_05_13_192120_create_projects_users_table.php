@@ -15,19 +15,18 @@ class CreateProjectsUsersTable extends Migration
     {
         Schema::create('projects_users', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->bigINteger('project_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('project_id');
 
-
-
-            $table->foreignId('project_id')
-                ->references('id')
-                ->on('projects');
-            $table->foreignId('user_id')
-                ->references('id')
-                ->on('users');
             $table->timestamps();
         });
+
+        Schema::table('projects_users', function (Blueprint $table) {
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+        });
+
     }
 
     /**

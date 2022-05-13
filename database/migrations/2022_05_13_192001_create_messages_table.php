@@ -15,20 +15,20 @@ class CreateMessagesTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('project_id')->unsigned();
             $table->boolean('commented');
             $table->text('content');
-            $table->foreignId('project_id')
-                ->references('id')
-                ->on('projects')
-                ->onDelete('cascade');
-            $table->foreignId('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('project_id');
+
             $table->timestamps();
         });
+
+        Schema::table('messages', function (Blueprint $table) {
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+        });
+
     }
 
     /**
